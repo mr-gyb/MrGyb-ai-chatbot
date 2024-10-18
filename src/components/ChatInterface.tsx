@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import MessageInput from "./MessageInput";
 import MessageList from "./MessageList";
 import TypingAnimation from "./TypingAnimation"; // Add this import
+import WatermarkBackground from "./WatermarkBackground"; // Add this import
 import { Menu } from "lucide-react";
 import { Message } from "@/types";
 
@@ -10,6 +11,7 @@ const ChatInterface: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isTyping, setIsTyping] = useState(false); // Add this state
   const [isTTSEnabled, setIsTTSEnabled] = useState(false); // Add this line
+  const [conversationStarted, setConversationStarted] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -33,6 +35,8 @@ const ChatInterface: React.FC = () => {
 
   const handleSendMessage = async (content: string) => {
     if (content.trim() === "") return;
+
+    setConversationStarted(true);
 
     const newMessage: Message = {
       id: Date.now(),
@@ -101,7 +105,8 @@ const ChatInterface: React.FC = () => {
 
   return (
     <div className="flex flex-col h-screen">
-      <div className="flex-grow flex flex-col w-11/12 mx-auto my-8 border border-gray-300 shadow-lg rounded-lg overflow-hidden">
+      <div className="flex-grow flex flex-col w-11/12 mx-auto my-8 border border-gray-300 shadow-lg rounded-lg overflow-hidden relative">
+        <WatermarkBackground show={!conversationStarted} />
         <div className="flex items-center py-4 bg-blue-600 text-white">
           <button className="ml-4 mr-4">
             <Menu size={30} /> {/* Hamburger icon */}
