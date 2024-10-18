@@ -1,6 +1,16 @@
 import React, { useState, useRef, useCallback } from "react";
-import { Mic, Square, Send, Headphones } from "lucide-react";
+import {
+  Mic,
+  Square,
+  Send,
+  Headphones,
+  Camera,
+  Image,
+  Folder,
+  Video,
+} from "lucide-react";
 import LoadingModal from "./LoadingModal"; // Import the new LoadingModal component
+import { cn } from "@/lib/utils"; // Assuming you have a utility function for class names
 
 interface MessageInputProps {
   onSendMessage: (message: string) => void;
@@ -12,6 +22,7 @@ interface MessageInputProps {
 const MessageInput: React.FC<MessageInputProps> = ({
   onSendMessage,
   isLoading,
+  isTTSEnabled,
   toggleTTS,
 }) => {
   const [message, setMessage] = useState("");
@@ -71,53 +82,108 @@ const MessageInput: React.FC<MessageInputProps> = ({
   };
 
   const handleToggleTTS = useCallback(() => {
+    toggleTTS();
+  }, [toggleTTS]);
+
+  // Add new handler functions for the new icons (implement these as needed)
+  const handleCameraClick = () => {
+    // Implement camera functionality
+    console.log("Camera clicked");
+  };
+
+  const handleImageClick = () => {
+    // Implement image upload functionality
+    console.log("Image upload clicked");
+  };
+
+  const handleFolderClick = () => {
+    // Implement folder/file selection functionality
+    console.log("Folder clicked");
+  };
+
+  const handleVideoClick = useCallback(() => {
     setShowLoadingModal(true);
     setTimeout(() => {
       setShowLoadingModal(false);
-      toggleTTS();
+      // Implement your video call logic here
+      console.log("Video call initiated");
     }, 2000);
-  }, [toggleTTS]);
+  }, []);
 
   return (
     <>
       <div className="flex items-center space-x-2 p-4 bg-white dark:bg-gray-800">
-        <input
-          type="text"
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          placeholder="Type a message..."
-          className="flex-grow p-2 border rounded-lg dark:bg-gray-700 dark:text-white"
-          disabled={isLoading || isRecording}
-        />
-        {!isRecording ? (
-          <button
-            onClick={startRecording}
-            disabled={isLoading}
-            className="p-2 bg-blue-500 text-white rounded-full hover:bg-blue-600 disabled:opacity-50"
-          >
-            <Mic size={24} />
-          </button>
-        ) : (
-          <button
-            onClick={stopRecording}
-            className="p-2 bg-red-500 text-white rounded-full hover:bg-red-600"
-          >
-            <Square size={24} />
-          </button>
-        )}
+        <button
+          onClick={handleCameraClick}
+          className="p-2 text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200"
+        >
+          <Camera size={20} />
+        </button>
+        <button
+          onClick={handleImageClick}
+          className="p-2 text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200"
+        >
+          <Image size={20} />
+        </button>
+        <button
+          onClick={handleFolderClick}
+          className="p-2 text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200"
+        >
+          <Folder size={20} />
+        </button>
+        <div className="flex-grow flex items-center p-2 border rounded-lg dark:bg-gray-700 dark:text-white">
+          <input
+            type="text"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            placeholder="Message"
+            className="flex-grow bg-transparent outline-none"
+            disabled={isLoading || isRecording}
+          />
+          {!isRecording ? (
+            <button
+              onClick={startRecording}
+              disabled={isLoading}
+              className="text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200"
+            >
+              <Mic size={20} />
+            </button>
+          ) : (
+            <button
+              onClick={stopRecording}
+              className="text-red-500 hover:text-red-600"
+            >
+              <Square size={20} />
+            </button>
+          )}
+        </div>
         <button
           onClick={handleSend}
           disabled={isLoading || isRecording || !message}
-          className="p-2 bg-green-500 text-white rounded-full hover:bg-green-600 disabled:opacity-50"
+          className="p-2 text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200 disabled:opacity-50"
         >
-          <Send size={24} />
+          <Send size={20} />
         </button>
         <button
           onClick={handleToggleTTS}
           disabled={isLoading || isRecording}
-          className="p-2 bg-purple-500 text-white rounded-full hover:bg-purple-600 disabled:opacity-50"
+          className={cn(
+            "p-2 text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200",
+            "transition-all duration-300 ease-in-out",
+            isTTSEnabled &&
+              "bg-blue-100 dark:bg-blue-900 rounded-full shadow-lg"
+          )}
         >
-          <Headphones size={24} />
+          <Headphones
+            size={20}
+            className={cn(isTTSEnabled && "text-blue-500")}
+          />
+        </button>
+        <button
+          onClick={handleVideoClick}
+          className="p-2 text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200"
+        >
+          <Video size={20} />
         </button>
       </div>
       <LoadingModal isOpen={showLoadingModal} />
