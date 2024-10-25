@@ -1,10 +1,6 @@
 "use client";
-import ChatInterface from "@/components/ChatInterface";
+import { redirect } from "next/navigation";
 
 export default function Home() {
-  return (
-    <main className="container mx-auto h-screen">
-      <ChatInterface />
-    </main>
-  );
+  redirect("/auth/signup");
 }
