@@ -63,7 +63,7 @@ export function SignInForm() {
 
           <button
             type="submit"
-            className="w-full bg-navy-blue text-white rounded-full py-3 px-4 font-semibold"
+            className="w-full bg-slate-800 text-white rounded-full py-3 px-4 font-semibold"
           >
             Sign In
           </button>

@@ -8,6 +8,8 @@ import {
 } from "@/lib/schemas";
 import { supabase } from "@/lib/supabase";
 import { revalidatePath } from "next/cache";
+import { createClient } from "@/utils/supabase/server";
+import { cookies } from "next/headers";
 
 export async function signUp(input: SignUpInput) {
   const result = signUpSchema.safeParse(input);
@@ -60,4 +62,21 @@ export async function signOut() {
 
   revalidatePath("/");
   return { success: true };
+}
+
+export async function createUser(data: SignUpInput) {
+  const cookieStore = cookies();
+  const supabase = createClient(cookieStore);
+
+  const { data: user, error } = await supabase.auth.signUp({
+    email: data.email,
+    password: data.password,
+    options: {
+      data: {
+        name: data.name,
+      },
+    },
+  });
+
+  return { user, error };
 }
