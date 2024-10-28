@@ -6,21 +6,23 @@ import {
   signUpSchema,
   signInSchema,
 } from "@/lib/schemas";
-import { supabase } from "@/lib/supabase";
+
 import { revalidatePath } from "next/cache";
+import { createClient } from "@/utils/supabase/server";
 
 export async function signUp(input: SignUpInput) {
+  const supabase = await createClient();
   const result = signUpSchema.safeParse(input);
   if (!result.success) {
     return { error: result.error.format() };
   }
 
-  const { data, error } = await supabase.auth.signUp({
-    email: input.email,
-    password: input.password,
+  const { error } = await supabase.auth.signUp({
+    email: input.email as string,
+    password: input.password as string,
     options: {
       data: {
-        name: input.name,
+        name: input.fullname,
       },
     },
   });
@@ -34,14 +36,15 @@ export async function signUp(input: SignUpInput) {
 }
 
 export async function signIn(input: SignInInput) {
+  const supabase = await createClient();
   const result = signInSchema.safeParse(input);
   if (!result.success) {
     return { error: result.error.format() };
   }
 
-  const { data, error } = await supabase.auth.signInWithPassword({
-    email: input.email,
-    password: input.password,
+  const { error } = await supabase.auth.signInWithPassword({
+    email: input.email as string,
+    password: input.password as string,
   });
 
   if (error) {
@@ -53,6 +56,7 @@ export async function signIn(input: SignInInput) {
 }
 
 export async function signOut() {
+  const supabase = await createClient();
   const { error } = await supabase.auth.signOut();
   if (error) {
     return { error: error.message };

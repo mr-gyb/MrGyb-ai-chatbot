@@ -7,9 +7,11 @@ import { signIn } from "@/app/actions/auth";
 // import { login } from "@/app/auth/signin/action";
 import { SignInInput, signInSchema } from "@/lib/schemas";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export function SignInForm() {
   const [serverError, setServerError] = useState<string | null>(null);
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -25,7 +27,7 @@ export function SignInForm() {
         typeof result.error === "string" ? result.error : "An error occurred"
       );
     } else {
-      // Handle successful sign in (e.g., redirect to dashboard)
+      router.push("/dashboard");
     }
   };
 

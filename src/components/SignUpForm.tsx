@@ -6,10 +6,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { signUp } from "@/app/actions/auth";
 import { SignUpInput, signUpSchema } from "@/lib/schemas";
 import Link from "next/link";
-// import { z } from "zod";
+import { useRouter } from "next/navigation";
 
 export function SignUpForm() {
   const [serverError, setServerError] = useState<string | null>(null);
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -25,7 +26,7 @@ export function SignUpForm() {
         typeof result.error === "string" ? result.error : "An error occurred"
       );
     } else {
-      // Handle successful sign up (e.g., redirect to dashboard)
+      router.push("/dashboard");
     }
   };
 
@@ -38,12 +39,12 @@ export function SignUpForm() {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
             <input
-              {...register("name")}
+              {...register("fullname")}
               placeholder="Name"
               className="w-full bg-white border border-gray-300 rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-navy-blue"
             />
-            {errors.name && (
-              <p className="text-red-500">{errors.name.message}</p>
+            {errors.fullname && (
+              <p className="text-red-500">{errors.fullname.message}</p>
             )}
           </div>
 
