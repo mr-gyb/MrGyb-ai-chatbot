@@ -6,6 +6,7 @@ import { signInWithGoogle } from "@/app/actions/auth";
 
 export const Social = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [serverError, setServerError] = useState<string | null>(null);
   const loginWithProvider = async (provider: "github" | "google") => {
     // const supbase = createSupabaseBrowser();
     // await supbase.auth.signInWithOAuth({
@@ -18,7 +19,13 @@ export const Social = () => {
 
     if (provider === "google") {
       setIsLoading(true);
-      await signInWithGoogle(window.location.origin);
+      const result = await signInWithGoogle(window.location.origin);
+
+      if (result) {
+        setServerError(
+          typeof result.error === "string" ? result.error : "An error occurred"
+        );
+      }
     }
   };
 
@@ -40,20 +47,23 @@ export const Social = () => {
   //       }
 
   return (
-    <Button
-      variant="outline"
-      type="button"
-      disabled={isLoading}
-      onClick={() => loginWithProvider("google")}
-      className="w-full"
-    >
-      {isLoading ? (
-        <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-      ) : (
-        <Icons.google className="mr-2 h-4 w-4" />
-      )}
-      Continue with Google
-    </Button>
+    <div>
+      <Button
+        variant="outline"
+        type="button"
+        disabled={isLoading}
+        onClick={() => loginWithProvider("google")}
+        className="w-full"
+      >
+        {isLoading ? (
+          <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+        ) : (
+          <Icons.google className="mr-2 h-4 w-4" />
+        )}
+        Continue with Google
+      </Button>
+      {serverError && <p className="text-red-500">{serverError}</p>}
+    </div>
   );
 };
 
