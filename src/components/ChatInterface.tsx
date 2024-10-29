@@ -106,7 +106,7 @@ const ChatInterface: React.FC = () => {
   return (
     <div className="flex flex-col h-screen">
       <div className="flex-grow flex flex-col w-11/12 mx-auto my-8 border border-gray-300 shadow-lg rounded-lg overflow-hidden relative">
-        <WatermarkBackground show={!conversationStarted} />
+        {/* <WatermarkBackground show={!conversationStarted} /> */}
         <div className="flex items-center py-4 bg-blue-600 text-white">
           <button className="ml-4 mr-4">
             <Menu size={30} /> {/* Hamburger icon */}

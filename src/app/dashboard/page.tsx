@@ -1,6 +1,7 @@
 // import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 // import { cookies } from "next/headers";
 // import { signOut } from "@/app/actions/auth";
+import NewChat from "@/components/NewChat";
 import { createClient } from "@/utils/supabase/server";
 
 export default async function DashboardPage() {
@@ -22,13 +23,5 @@ export default async function DashboardPage() {
   //   await signOut();
   // };
 
-  return (
-    <div>
-      <h1>Welcome, {user.user_metadata.name || user.email}</h1>
-
-      {/* <button onClick={handleSignOut} type="submit">
-        Sign Out
-      </button> */}
-    </div>
-  );
+  return <NewChat />;
 }
