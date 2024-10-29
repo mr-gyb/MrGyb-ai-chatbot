@@ -1,6 +1,6 @@
 // import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 // import { cookies } from "next/headers";
-import { signOut } from "@/app/actions/auth";
+// import { signOut } from "@/app/actions/auth";
 import { createClient } from "@/utils/supabase/server";
 
 export default async function DashboardPage() {
