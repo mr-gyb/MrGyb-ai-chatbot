@@ -1,6 +1,7 @@
 // import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 // import { cookies } from "next/headers";
 // import { signOut } from "@/app/actions/auth";
+import { Header } from "@/components/Header";
 import NewChat from "@/components/NewChat";
 import { createClient } from "@/utils/supabase/server";
 
@@ -23,5 +24,12 @@ export default async function DashboardPage() {
   //   await signOut();
   // };
 
-  return <NewChat />;
+  return (
+    <div className="flex min-h-screen flex-col">
+      <Header />
+      <main className="flex-1 container mx-auto pt-20">
+        <NewChat />
+      </main>
+    </div>
+  );
 }

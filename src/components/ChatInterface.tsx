@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import MessageInput from "./MessageInput";
 import MessageList from "./MessageList";
 import TypingAnimation from "./TypingAnimation"; // Add this import
-import WatermarkBackground from "./WatermarkBackground"; // Add this import
+// import WatermarkBackground from "./WatermarkBackground"; // Add this import
 import { Menu } from "lucide-react";
 import { Message } from "@/types";
 
@@ -11,7 +11,7 @@ const ChatInterface: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isTyping, setIsTyping] = useState(false); // Add this state
   const [isTTSEnabled, setIsTTSEnabled] = useState(false); // Add this line
-  const [conversationStarted, setConversationStarted] = useState(false);
+  // const [conversationStarted, setConversationStarted] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
