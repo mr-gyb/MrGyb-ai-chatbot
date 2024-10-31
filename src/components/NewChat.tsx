@@ -1,19 +1,9 @@
 "use client";
 
 import { useRef, useState } from "react";
-import {
-  Send,
-  //   ChevronDown,
-  PlusCircle,
-  Camera,
-  Image as ImageIcon,
-  Folder,
-  Mic,
-  Video,
-  Headphones,
-} from "lucide-react";
+import { PlusCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+
 import {
   Select,
   SelectContent,
@@ -21,16 +11,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { cn } from "@/lib/utils";
 import MessageList from "./MessageList";
 import TypingAnimation from "./TypingAnimation";
 import MessageInput from "./MessageInput";
 import { Message } from "@/types";
-// interface Message {
-//   role: "user" | "assistant";
-//   content: string;
-// }
 
 interface Agent {
   name: string;
@@ -38,16 +22,13 @@ interface Agent {
 }
 
 export function NewChat() {
-  //   const [input, setInput] = useState("");
   const [selectedAgent, setSelectedAgent] = useState("Mr.GYB AI");
-  //   const [messages, setMessages] = useState<Message[]>([]);
-  //   const fileInputRef = useRef<HTMLInputElement>(null);
-  //   const messagesEndRef = useRef<HTMLDivElement>(null);
+
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isTyping, setIsTyping] = useState(false); // Add this state
   const [isTTSEnabled, setIsTTSEnabled] = useState(false); // Add this line
-  //   const [conversationStarted, setConversationStarted] = useState(false);
+
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -91,7 +72,7 @@ export function NewChat() {
 
     setMessages((prevMessages) => [...prevMessages, newMessage]);
     setIsLoading(true);
-    setIsTyping(true); // Start typing animation
+    setIsTyping(true);
 
     try {
       // TODO: Implement API call to OpenAI GPT
@@ -149,9 +130,8 @@ export function NewChat() {
   };
 
   return (
-    <div className="flex h-screen flex-col bg-white">
-      {/* Header */}
-      <div className="flex items-center justify-between bg-navy-blue p-2 sm:p-4">
+    <div className="fixed top-16 left-0 right-0 flex h-[calc(100vh-64px)] w-full flex-col bg-white">
+      <div className="flex w-full items-center justify-between bg-navy-blue p-2 sm:p-4">
         <div className="flex items-center">
           <Select value={selectedAgent} onValueChange={setSelectedAgent}>
             <SelectTrigger className="w-[180px] border-none bg-transparent text-white font-bold">
@@ -169,7 +149,6 @@ export function NewChat() {
               ))}
             </SelectContent>
           </Select>
-          {/* <ChevronDown className="text-white ml-2" size={16} /> */}
         </div>
 
         <Button
@@ -182,122 +161,18 @@ export function NewChat() {
         </Button>
       </div>
 
-      {/* Chat Messages */}
-      {/* <ScrollArea className="flex-1 p-4 space-y-4">
-        {messages.map((message, index) => (
-          <div
-            key={index}
-            className={cn(
-              "flex mb-4",
-              message.role === "user" ? "justify-end" : "justify-start"
-            )}
-          >
-            <div
-              className={cn(
-                "max-w-xs sm:max-w-md lg:max-w-lg rounded-lg p-2 sm:p-3",
-                message.role === "user"
-                  ? "bg-gold text-navy-blue"
-                  : "bg-navy-blue text-white"
-              )}
-            >
-              <p className="text-sm sm:text-base">{message.content}</p>
-            </div>
-          </div>
-        ))}
-        <div ref={messagesEndRef} />
-      </ScrollArea> */}
-
-      <div className="flex-grow overflow-auto bg-gray-50">
+      <div className="flex-grow w-full overflow-auto bg-gray-50">
         <MessageList messages={messages} />
-        {isTyping && <TypingAnimation />} {/* Add this line */}
+        {isTyping && <TypingAnimation />}
         <div ref={messagesEndRef} />
       </div>
+
       <MessageInput
         onSendMessage={handleSendMessage}
         isLoading={isLoading}
         isTTSEnabled={isTTSEnabled}
         toggleTTS={toggleTTS}
       />
-
-      {/* Input Area
-      <div className="p-2 sm:p-4 border-t border-gray-200">
-        <div className="flex items-center bg-gray-100 rounded-full">
-          <div className="flex items-center space-x-1 sm:space-x-2 px-1 sm:px-2">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="text-gray-600 hover:text-navy-blue"
-            >
-              <Camera size={16} />
-            </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => fileInputRef.current?.click()}
-              className="text-gray-600 hover:text-navy-blue"
-            >
-              <ImageIcon size={16} />
-            </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="text-gray-600 hover:text-navy-blue"
-            >
-              <Folder size={16} />
-            </Button>
-          </div>
-
-          <Input
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
-            placeholder="Message"
-            className="flex-grow bg-transparent border-none focus:ring-0 text-navy-blue text-sm sm:text-base px-2 sm:px-4 py-1 sm:py-2"
-          />
-
-          <div className="flex items-center space-x-1 sm:space-x-2 px-1 sm:px-2">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="text-gray-600 hover:text-navy-blue"
-            >
-              <Mic size={16} />
-            </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="text-gray-600 hover:text-navy-blue"
-            >
-              <Headphones size={16} />
-            </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="text-gray-600 hover:text-navy-blue"
-            >
-              <Video size={16} />
-            </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={handleSendMessage}
-              className="text-navy-blue hover:text-blue-600"
-            >
-              <Send size={16} />
-            </Button>
-          </div>
-        </div>
-      </div>
-
-      <input
-        type="file"
-        ref={fileInputRef}
-        className="hidden"
-        onChange={(e) => {
-          const file = e.target.files?.[0];
-          if (file) console.log("File selected:", file.name);
-        }}
-      /> */}
     </div>
   );
 }
