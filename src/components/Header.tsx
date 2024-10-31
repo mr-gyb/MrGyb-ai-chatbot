@@ -5,11 +5,15 @@ import { Menu, X } from "lucide-react";
 // import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import Image from "next/image";
+import { useGetUserDetails } from "@/hooks/useGetUserDetails";
+import { SideMenu } from "./SideMenu";
+
 // import SideMenu from "./SideMenu";
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const router = useRouter();
+  const { user: userData } = useGetUserDetails();
   const pathname = usePathname();
 
   const toggleMenu = () => {
@@ -64,11 +68,11 @@ export function Header() {
           <div className="w-6"></div>
         </div>
       </header>
-      {/* <SideMenu
+      <SideMenu
         isOpen={isMenuOpen}
         onClose={() => setIsMenuOpen(false)}
-        userData={userData}
-      /> */}
+        userData={userData ?? undefined}
+      />
     </>
   );
 }

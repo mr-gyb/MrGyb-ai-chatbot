@@ -1,28 +1,23 @@
-// import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-// import { cookies } from "next/headers";
-// import { signOut } from "@/app/actions/auth";
+"use client";
+
+import { useGetUserDetails } from "@/hooks/useGetUserDetails";
 import { Header } from "@/components/Header";
 import NewChat from "@/components/NewChat";
-import { createClient } from "@/utils/supabase/server";
 
-export default async function DashboardPage() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-    error,
-  } = await supabase.auth.getUser();
+export default function DashboardPage() {
+  const { user, isLoading, error } = useGetUserDetails();
 
   if (error) {
-    return <div>error...</div>;
+    return <div>Error: {error.message}</div>;
   }
 
-  if (!user) {
+  if (isLoading) {
     return <div>Loading...</div>;
   }
 
-  // const handleSignOut = async () => {
-  //   await signOut();
-  // };
+  if (!user) {
+    return <div>Not authenticated</div>;
+  }
 
   return (
     <div className="flex min-h-screen flex-col">
