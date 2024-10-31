@@ -17,5 +17,12 @@ export interface StreamingAvatarEventMap {
 
 export interface StartAvatarResponse {
   videoStream: MediaStream;
-  [key: string]: any;
+  [key: string]:
+    | MediaStream
+    | string
+    | number
+    | boolean
+    | object
+    | null
+    | undefined;
 }
